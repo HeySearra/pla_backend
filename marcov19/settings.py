@@ -699,9 +699,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'marcovdb',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'USER': 'marcovdb',
+        'PASSWORD': 'marcovdb',
+        'HOST': '42.194.158.76',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
