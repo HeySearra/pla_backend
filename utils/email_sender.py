@@ -11,6 +11,11 @@ from django.template.defaultfilters import striptags
 
 from meta_config import HELL_WORDS
 
+# TODO: remove the setting to global config file
+FROM_ADDR = 'rwpython2022a@gmx.com'
+PASSWORD = 'JH9z3@xQ56fzEw7'
+SMTP_SERVER = 'mail.gmx.com'
+
 
 def req():
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0'}
@@ -96,14 +101,11 @@ def rand_sent() -> str:
 
 def send_code(acc, email_type, storage=True):
     # 发信方的信息：发信邮箱，QQ 邮箱授权码
-    from_addr = 'marcov19@163.com'
-    password = 'LXZZOAHUTTYIBZBP'
 
     # 收信方邮箱
     to_addr = acc
 
     # 发信服务器
-    smtp_server = 'smtp.163.com'
 
     # 生成随机验证码
     code_list = []
@@ -171,20 +173,20 @@ def send_code(acc, email_type, storage=True):
         msg = MIMEText(content % ('找回密码的链接', storage_code, "-" * 3 * len(sent), sent), 'html', 'utf-8')
         msg['Subject'] = Header('affiliation:' + email_type + 'done')
 
-    msg['From'] = Header(from_addr)
+    msg['From'] = Header(FROM_ADDR)
     msg['To'] = Header(to_addr)
 
-    server = smtplib.SMTP_SSL(host='smtp.163.com')
-    server.connect(smtp_server, 465)
-    server.login(from_addr, password)
-    server.sendmail(from_addr, to_addr, msg.as_string())
+    server = smtplib.SMTP_SSL(host=SMTP_SERVER)
+    server.connect(SMTP_SERVER, 465)
+    server.login(FROM_ADDR, PASSWORD)
+    server.sendmail(FROM_ADDR, to_addr, msg.as_string())
     server.quit()
 
     if storage:
         from user.models import VerifyCode
         ver_code = VerifyCode()
         ver_code.code = code_num
-        print('验证码：'+code_num)
+        print('验证码：' + code_num)
         ver_code.account = acc
         ver_code.expire_time = datetime.now() + timedelta(minutes=60)
         ver_code.email_type = email_type
@@ -199,14 +201,10 @@ def send_code(acc, email_type, storage=True):
 
 
 def send_follow(user, data):
-    from_addr = 'marcov19@163.com'
-    password = 'LXZZOAHUTTYIBZBP'
-
     # 收信方邮箱
     to_addr = user.account
 
     # 发信服务器
-    smtp_server = 'smtp.163.com'
 
     content = r"""
     用户%s：
@@ -275,19 +273,19 @@ def send_follow(user, data):
     msg = MIMEText(content % user.name + body + tag % ("-" * 3 * len(sent), sent), 'html', 'utf-8')
     msg['Subject'] = Header('marcov19 疫情订阅每日推送' + random.choice(HELL_WORDS))
 
-    msg['From'] = Header(from_addr)
+    msg['From'] = Header(FROM_ADDR)
     msg['To'] = Header(to_addr)
 
-    server = smtplib.SMTP_SSL(host='smtp.163.com')
-    server.connect(smtp_server, 465)
-    server.login(from_addr, password)
-    server.sendmail(from_addr, to_addr, msg.as_string())
+    server = smtplib.SMTP_SSL(host=SMTP_SERVER)
+    server.connect(SMTP_SERVER, 465)
+    server.login(FROM_ADDR, PASSWORD)
+    server.sendmail(FROM_ADDR, to_addr, msg.as_string())
     server.quit()
 
 
 if __name__ == '__main__':
     # req()
-    send_code('1134995360@qq.com', 'register', storage=False)
+    send_code('rwpython2022@proton.me', 'register', storage=False)
 
     # print(rand_sent())
     # print(rand_sent())
