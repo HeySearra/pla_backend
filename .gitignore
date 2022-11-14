@@ -22,3 +22,4 @@ spiders_data/
 spiders/chromedriver.exe
 flight/chromedriver.exe
 .venv
+keys
