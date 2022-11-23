@@ -19,8 +19,7 @@ jobs:
           pip install -r requirements.txt
           mkdir -p logging
           python manage.py migrate
-          systemctl stop django
-          systemctl start django
+          sudo systemctl restart django
         host: '42.194.158.76'
         user: pla_backend
         port: 22
