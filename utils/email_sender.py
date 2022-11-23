@@ -12,9 +12,9 @@ from django.template.defaultfilters import striptags
 from meta_config import HELL_WORDS
 
 # TODO: remove the setting to global config file
-FROM_ADDR = 'rwpython2022a@gmx.com'
-PASSWORD = 'JH9z3@xQ56fzEw7'
-SMTP_SERVER = 'mail.gmx.com'
+FROM_ADDR = 'test13032719831@163.com'
+PASSWORD = 'AQRJSUVZAQXPZNVF'
+SMTP_SERVER = 'smtp.163.com'
 
 
 def req():
