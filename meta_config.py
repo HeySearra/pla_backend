@@ -3,7 +3,7 @@ import re
 DEBUG = True
 CHAT_DEBUG = True
 
-SPIDER_DATA_DIRNAME = 'spiders_data'
+SPIDER_DATA_DIRNAME = '/home/pla_backend/pla_backend/spiders_data'
 BULK_CREATE_BATCH_SIZE = 4096
 
 HOST_IP = 'localhost'
