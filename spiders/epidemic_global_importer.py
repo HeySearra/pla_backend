@@ -11,6 +11,9 @@ from meta_config import SPIDER_DATA_DIRNAME
 from spiders.epidemic_China_total_importer import epidemic_China_total_import
 from utils.country_dict import country_dict, re_country_vaacinations_dict
 from utils.download import download_from_url
+import sys
+
+sys.path.append("..")
 
 
 def dt_change_ymd(date):
@@ -63,7 +66,9 @@ def epidemic_global_import(start_dt=None):
     vacc_file = os.path.join(SPIDER_DATA_DIRNAME, 'vaccinations.csv')
     if os.path.exists(vacc_file):
         os.remove(vacc_file)
-    download_from_url('https://github.com.cnpmjs.org/owid/covid-19-data/raw/master/public/data/vaccinations/vaccinations.csv', vacc_file)
+    download_from_url(
+        'https://github.com.cnpmjs.org/owid/covid-19-data/raw/master/public/data/vaccinations/vaccinations.csv',
+        vacc_file)
     data_vaccinations = pandas.read_csv(vacc_file).fillna(0)
 
     requests.packages.urllib3.disable_warnings()
