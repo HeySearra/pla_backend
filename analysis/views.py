@@ -3,6 +3,7 @@ import datetime
 from django.views import View
 
 from meta_config import SPIDER_DATA_DIRNAME
+from spiders.epidemic_China_total_importer import epidemic_China_total_import, epidemic_china_total_alldate_import
 from spiders.epidemic_global_importer import dt_delta
 from user.models import User, Follow
 from utils.country_dict import country_dict
@@ -187,6 +188,8 @@ def country_analyse_data_res(kwargs):
                     'vaccinated': vaccine[kwargs['name']],
                 }
                 """
+    elif kwargs['name'] == '中国':
+        daily_data = epidemic_china_total_alldate_import()
     else:
         global_analysis = json.load(open(global_json_path, 'r', encoding='utf-8'))
         for d in global_analysis[:-1]:

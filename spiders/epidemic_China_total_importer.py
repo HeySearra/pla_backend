@@ -1,10 +1,11 @@
 import json
 import os
 from meta_config import SPIDER_DATA_DIRNAME
+import datetime
 
 
 # date -> str: 2021-07-09
-def epidemic_China_total_import(date):
+def epidemic_China_total_import(date: str):
     China_data = {
         "new": {
             "died": 0,
@@ -36,3 +37,18 @@ def epidemic_China_total_import(date):
         China_data['new']['confirmed'] += it['new']['confirmed']
 
     return China_data
+
+
+cached_china_total = None
+
+
+def epidemic_china_total_alldate_import():
+    global cached_china_total
+    if cached_china_total is None:
+        cached_china_total = []
+        nowdate = datetime.date(2020, 1, 28)
+        while nowdate != datetime.date(2021, 7, 11):
+            res = epidemic_China_total_import(nowdate.isoformat()) or {}
+            res['date'] = nowdate.isoformat()
+            cached_china_total.append(res)
+    return cached_china_total
