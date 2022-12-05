@@ -51,4 +51,5 @@ def epidemic_china_total_alldate_import():
             res = epidemic_China_total_import(nowdate.isoformat()) or {}
             res['date'] = nowdate.isoformat()
             cached_china_total.append(res)
+            nowdate += 1
     return cached_china_total
