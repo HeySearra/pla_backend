@@ -417,6 +417,7 @@ def epidemic_domestic_daily_import():
     # r = open(os.path.join(SPIDER_DATA_DIRNAME, 'epidemic_domestic_data', '2021-07-10.json')).read()
     print('[loading]')
     r = requests.get('https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5')
+    r.encoding = 'utf-8'
     daily_data = json.loads(r.text.replace('\\', '').replace('"{', '{').replace('}"', '}'))
     today_provinces_data_list = daily_data['data']['areaTree'][0]['children']
     today_provinces_data = {}

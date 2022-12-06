@@ -21,7 +21,7 @@ def epidemic_China_total_import(date: str):
         },
     }
     provinces_json = os.path.join(SPIDER_DATA_DIRNAME, 'epidemic_domestic_data', 'province.json')
-    provinces = json.load(open(provinces_json, 'r', encoding='utf-8'))
+    provinces = json.load(open(provinces_json, 'r', encoding='gbk'))
     data = None
     for it in provinces:
         if it['date'] == date:
