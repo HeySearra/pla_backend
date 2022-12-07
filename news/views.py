@@ -23,12 +23,10 @@ class WeeklyNews(View):
     def post(self, request):
         # new_news = news_spider()
         kwargs: dict = json.loads(request.body)
-        if kwargs.keys() != {'date'}:
-            return 1, '', [], []
         res_china, res_global = [], []
         today_date = datetime.now().date()
         
-        if kwargs['date'] == '':
+        if kwargs.get('date') is None or kwargs['date'] == '':
             for dis in range(7):
                 cur_date = today_date - timedelta(days=dis)
                 WeeklyNews.res_append(News.objects.filter(publish_time=cur_date), res_china, res_global)
