@@ -17,7 +17,7 @@ delta = dt.timedelta(days=1)
 
 # from spiders.epidemic_domestic_importer import epidemic_domestic_import
 def epidemic_domestic_import(date_begin='2020-01-22',
-                             date_end='2021-07-09'):
+                             date_end=datetime.today().strftime("%Y-%m-%d")):
     # 正式版本参数中应为datetime.today()
 
     date_begin = date_begin.split('-')
@@ -84,7 +84,7 @@ def epidemic_domestic_import(date_begin='2020-01-22',
     all_data.reverse()
 
     daily_info = {}
-    last = json.load(open(area_file))
+    last = json.load(open(area_file, encoding='utf-8'))
     for city in last.keys():
         last[city]['province_total_died'] = 0
         last[city]['province_total_cured'] = 0
@@ -142,19 +142,21 @@ def epidemic_domestic_import(date_begin='2020-01-22',
                         all_data[idx]['province_confirmedCount'], 0)
 
             city = all_data[idx]['cityName']
-            daily_info[nd][city]['city_new_died'] = max(
-                all_data[idx]['city_deadCount'] - last[city]['city_total_died'], 0)
-            daily_info[nd][city]['city_new_cured'] = max(
-                all_data[idx]['city_curedCount'] - last[city]['city_total_cured'], 0)
-            daily_info[nd][city]['city_new_confirmed'] = max(
-                all_data[idx]['city_confirmedCount'] - last[city]['city_total_confirmed'], 0)
-            daily_info[nd][city]['city_total_died'] = max(
-                all_data[idx]['city_deadCount'], 0)
-            daily_info[nd][city]['city_total_cured'] = max(
-                all_data[idx]['city_curedCount'], 0)
-            daily_info[nd][city]['city_total_confirmed'] = max(
-                all_data[idx]['city_confirmedCount'], 0)
-
+            try:
+                daily_info[nd][city]['city_new_died'] = max(
+                    all_data[idx]['city_deadCount'] - last[city]['city_total_died'], 0)
+                daily_info[nd][city]['city_new_cured'] = max(
+                    all_data[idx]['city_curedCount'] - last[city]['city_total_cured'], 0)
+                daily_info[nd][city]['city_new_confirmed'] = max(
+                    all_data[idx]['city_confirmedCount'] - last[city]['city_total_confirmed'], 0)
+                daily_info[nd][city]['city_total_died'] = max(
+                    all_data[idx]['city_deadCount'], 0)
+                daily_info[nd][city]['city_total_cured'] = max(
+                    all_data[idx]['city_curedCount'], 0)
+                daily_info[nd][city]['city_total_confirmed'] = max(
+                    all_data[idx]['city_confirmedCount'], 0)
+            except:
+                pass
             idx += 1
 
         for city in last.keys():
