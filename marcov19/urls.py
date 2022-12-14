@@ -66,6 +66,7 @@ urlpatterns = [
 
     # ======== 五、新闻 ========
     path('news/weekly', WeeklyNews.as_view()),
+    path('news/xinwen', PolicyNews.as_view()),
 
     # ======== 六、小知识 ========
     path('rumor/list', RumorList.as_view()),
