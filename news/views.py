@@ -27,7 +27,7 @@ class WeeklyNews(View):
         today_date = datetime.now().date()
 
         if kwargs.get('date') is None or kwargs['date'] == '':
-            for dis in range(100):
+            for dis in range(999):
                 cur_date = today_date - timedelta(days=dis)
                 WeeklyNews.res_append(News.objects.filter(publish_time=cur_date), res_china, res_global)
         else:
@@ -67,7 +67,7 @@ class PolicyNews(View):
         today_date = datetime.now().date()
 
         if kwargs.get('date') is None or kwargs['date'] == '':
-            for dis in range(100):
+            for dis in range(999):
                 cur_date = today_date - timedelta(days=dis)
                 PolicyNews.res_append(NewsPolicy.objects.filter(publish_time=cur_date), res_china, res_global)
         else:
