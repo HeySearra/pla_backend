@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.views import View
 
-from news.models import News, Rumor
+from news.models import News, Rumor, NewsPolicy
 from utils.meta_wrapper import JSR
 
 
@@ -18,29 +18,25 @@ class WeeklyNews(View):
         '智利', '巴西', '南美',
         '俄罗斯', '伊拉克',
     }
-    
+
     @JSR('status', 'date', 'china', 'global')
     def post(self, request):
         # new_news = news_spider()
         kwargs: dict = json.loads(request.body)
-        if kwargs.keys() != {'date'}:
-            return 1, '', [], []
         res_china, res_global = [], []
         today_date = datetime.now().date()
-        
-        if kwargs['date'] == '':
-            for dis in range(7):
-                cur_date = today_date - timedelta(days=dis)
-                WeeklyNews.res_append(News.objects.filter(publish_time=cur_date), res_china, res_global)
+
+        if kwargs.get('date') is None or kwargs['date'] == '':
+            WeeklyNews.res_append(News.objects.all(), res_china, res_global)
         else:
             try:
                 someday_date = datetime.strptime(kwargs['date'].split('T')[0], '%Y-%m-%d').date()
                 WeeklyNews.res_append(News.objects.filter(publish_time=someday_date), res_china, res_global)
             except:
                 return 2, '', [], []
-        
+
         return 0, today_date.strftime('%Y-%m-%d'), res_china, res_global
-    
+
     @staticmethod
     def res_append(query, res_china, res_global):
         for a in query:
@@ -57,6 +53,42 @@ class WeeklyNews(View):
                 'publish_time': a.publish_time.strftime('%Y-%m-%d'),
                 'media_name': a.media,
                 'img_url': a.img if a.img else '',
+            })
+
+
+class PolicyNews(View):
+    @JSR('status', 'date', 'china', 'global')
+    def post(self, request):
+        # new_news = news_spider()
+        kwargs: dict = json.loads(request.body)
+        res_china, res_global = [], []
+        today_date = datetime.now().date()
+
+        if kwargs.get('date') is None or kwargs['date'] == '':
+            PolicyNews.res_append(NewsPolicy.objects.all(), res_china, res_global)
+        else:
+            try:
+                someday_date = datetime.strptime(kwargs['date'].split('T')[0], '%Y-%m-%d').date()
+                PolicyNews.res_append(NewsPolicy.objects.filter(publish_time=someday_date), res_china, res_global)
+            except:
+                return 2, '', [], []
+
+        return 0, today_date.strftime('%Y-%m-%d'), res_china, res_global
+
+    @staticmethod
+    def res_append(query, res_china, res_global):
+        for a in query:
+            a: News
+            china, title = True, a.title
+            for oversea_key in WeeklyNews.OVERSEA_KEYS:
+                if oversea_key in title:
+                    china = False
+                    break
+            (res_china if china else res_global).append({
+                'title': a.title,
+                'url': a.url,
+                'publish_time': a.publish_time.strftime('%Y-%m-%d'),
+                'media_name': a.media,
             })
 
 
