@@ -47,7 +47,7 @@ def epidemic_china_total_alldate_import():
     if cached_china_total is None:
         cached_china_total = []
         nowdate = datetime.date(2020, 1, 28)
-        while nowdate != datetime.date(2021, 7, 11):
+        while nowdate != datetime.date(2022, 12, 11):
             res = epidemic_China_total_import(nowdate.isoformat()) or {}
             res['date'] = nowdate.isoformat()
             cached_china_total.append(res)
